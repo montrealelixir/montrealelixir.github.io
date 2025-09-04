@@ -3,69 +3,418 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Montreal Elixir</title>
+        <title>Montreal Elixir - Community for Elixir Developers</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
         <style>
-            body {
-                font-family: Arial, sans-serif;
+            :root {
+                --elixir-purple: #6b46c1;
+                --elixir-light: #8b5cf6;
+                --elixir-dark: #5b21b6;
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --bg-card: #334155;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+                --text-muted: #94a3b8;
+                --accent: #f59e0b;
+                --gradient: linear-gradient(
+                    135deg,
+                    var(--elixir-purple) 0%,
+                    var(--elixir-light) 100%
+                );
+            }
+
+            * {
                 margin: 0;
                 padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Inter", sans-serif;
                 line-height: 1.6;
-                background: #f9f9f9;
-                color: #333;
+                background: var(--bg-primary);
+                color: var(--text-primary);
+                overflow-x: hidden;
             }
-            header,
-            footer {
-                background: #2d2d2d;
-                color: #fff;
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 2rem;
+            }
+
+            header {
+                background: var(--gradient);
+                background-image:
+                    linear-gradient(rgba(107, 70, 193, 0.8), rgba(139, 92, 246, 0.8)),
+                    url("images/hero.jpg");
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+                position: relative;
+                padding: 6rem 0 16rem 0;
                 text-align: center;
-                padding: 1rem 0;
+                overflow: visible;
+                min-height: 60vh;
             }
-            main {
-                max-width: 800px;
-                margin: 2rem auto;
-                padding: 0 1rem;
-                background: #fff;
+
+            header::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+                opacity: 0.3;
+            }
+
+            .hero {
+                position: relative;
+                z-index: 1;
+            }
+
+            .hero h1 {
+                display: none;
+            }
+
+            .hero p {
+                font-size: 1.5rem;
+                font-weight: 300;
+                opacity: 0.9;
+                max-width: 600px;
+                margin: 0 auto;
+                animation: fadeInUp 1s ease-out 0.2s both;
+                margin-bottom: 2rem;
+            }
+
+            .logo {
+                display: block;
+                width: 300px;
+                height: 180px;
+                max-height: 180px;
+                margin: 3rem auto 10rem;
+                border-radius: 20px;
+                box-shadow: 0 12px 50px rgba(0, 0, 0, 0.5);
+                animation: float 3s ease-in-out infinite;
+                background: rgba(255, 255, 255, 0.15);
+                padding: 24px;
+                backdrop-filter: blur(10px);
+                border: 2px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .logo img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
                 border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
-            h1 {
-                margin-top: 0;
+
+            main {
+                padding: 4rem 0;
             }
-            .events {
-                list-style: none;
-                padding: 0;
+
+            .section {
+                margin-bottom: 4rem;
+                background: var(--bg-secondary);
+                border-radius: 16px;
+                padding: 3rem;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                animation: fadeInUp 1s ease-out;
             }
-            .events li {
-                margin: 0.5rem 0;
+
+            .section h2 {
+                font-size: 2rem;
+                font-weight: 600;
+                margin-bottom: 1.5rem;
+                color: var(--elixir-light);
+                position: relative;
             }
-            .events a {
-                color: #007acc;
+
+            .section h2::after {
+                content: "";
+                position: absolute;
+                bottom: -8px;
+                left: 0;
+                width: 60px;
+                height: 3px;
+                background: var(--gradient);
+                border-radius: 2px;
+            }
+
+            .section p {
+                font-size: 1.1rem;
+                color: var(--text-secondary);
+                margin-bottom: 1.5rem;
+                line-height: 1.8;
+            }
+
+            .features {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 2rem;
+                margin-top: 3rem;
+            }
+
+            .feature-card {
+                background: var(--bg-card);
+                padding: 2rem;
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                transition:
+                    transform 0.3s ease,
+                    box-shadow 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .feature-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 3px;
+                background: var(--gradient);
+            }
+
+            .feature-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 40px rgba(107, 70, 193, 0.2);
+            }
+
+            .feature-card h3 {
+                font-size: 1.3rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+                color: var(--text-primary);
+            }
+
+            .feature-card p {
+                color: var(--text-muted);
+                font-size: 1rem;
+                margin: 0;
+            }
+
+            .feature-card a {
+                color: var(--text-primary);
                 text-decoration: none;
+                transition: color 0.3s ease;
             }
-            .events a:hover {
-                text-decoration: underline;
+
+            .cta-section {
+                text-align: center;
+                background: var(--bg-card);
+                border: 2px solid var(--elixir-purple);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .cta-section::before {
+                content: "";
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: conic-gradient(transparent, var(--elixir-purple), transparent 30%);
+                animation: rotate 4s linear infinite;
+                opacity: 0.1;
+            }
+
+            .cta-content {
+                position: relative;
+                z-index: 1;
+            }
+
+            .btn {
+                display: inline-block;
+                background: var(--gradient);
+                color: white;
+                padding: 1rem 2rem;
+                text-decoration: none;
+                border-radius: 50px;
+                font-weight: 600;
+                font-size: 1.1rem;
+                transition:
+                    transform 0.3s ease,
+                    box-shadow 0.3s ease;
+                box-shadow: 0 4px 20px rgba(107, 70, 193, 0.3);
+            }
+
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 30px rgba(107, 70, 193, 0.4);
+            }
+
+            footer {
+                background: var(--bg-secondary);
+                text-align: center;
+                padding: 2rem 0;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            footer p {
+                color: var(--text-muted);
+                font-size: 0.9rem;
+            }
+
+            footer a {
+                color: var(--elixir-light);
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+            footer a:hover {
+                color: var(--text-primary);
+            }
+
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes float {
+                0%,
+                100% {
+                    transform: translateY(0px);
+                }
+                50% {
+                    transform: translateY(-5px);
+                }
+            }
+
+            @keyframes rotate {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    padding: 0 1rem;
+                }
+
+                .logo {
+                    width: 220px;
+                    max-height: 130px;
+                    padding: 16px;
+                    margin: 2rem auto 3rem;
+                }
+
+                header {
+                    padding: 4rem 0;
+                    min-height: 50vh;
+                }
+
+                .section {
+                    padding: 2rem;
+                }
+
+                .features {
+                    grid-template-columns: 1fr;
+                }
             }
         </style>
     </head>
     <body>
         <header>
-            <h1>Montreal Elixir</h1>
-            <p>The community for Elixir developers in Montreal</p>
+            <div class="container">
+                <div class="hero">
+                    <div class="logo">
+                        <img src="images/logo.png" alt="Montreal Elixir Logo" />
+                    </div>
+                    <p>
+                        The vibrant community for Elixir developers in Montreal. Where concurrency
+                        meets collaboration.
+                    </p>
+                </div>
+            </div>
         </header>
 
         <main>
-            <section>
-                <h2>About Us</h2>
-                <p>
-                    Montreal Elixir is a meetup group where Elixir enthusiasts of all levels gather
-                    to learn, share, and network. We host monthly talks focused on the Elixir
-                    ecosystem.
-                </p>
-            </section>
+            <div class="container">
+                <section class="section">
+                    <h2>About Our Community</h2>
+                    <p>
+                        Montreal Elixir is more than just a meetup group – we're a thriving
+                        community of developers, engineers, and enthusiasts passionate about the
+                        Elixir ecosystem. Whether you're building web applications with Phoenix
+                        LiveView or exploring OTP patterns, our community welcomes developers of all
+                        experience levels.
+                    </p>
+                    <p>
+                        Join us for monthly talks we dive deep into the world of concurrent,
+                        fault-tolerant applications powered by the BEAM virtual machine.
+                    </p>
+                </section>
+
+                <section class="section">
+                    <h2>What We Offer</h2>
+                    <div class="features">
+                        <div class="feature-card">
+                            <h3>Monthly Meetups</h3>
+                            <p>
+                                Join us
+                                <a href="https://guild.host/elixir-montreal/events"
+                                    >every last Wednesday of the month</a
+                                >
+                                to learn and share your passion for the Elixir programming language
+                                and the BEAM virtual machine.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>Community Discussion</h3>
+                            <p>
+                                Connect with fellow Elixir enthusiasts on
+                                <a href="https://discord.gg/9ZFBvpbkkA">Discord</a>
+                                where you can ask questions, share knowledge, and discuss the latest
+                                in the Elixir ecosystem.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>Past Talks</h3>
+                            <p>
+                                Watch recordings of our previous meetups and presentations on
+                                <a href="https://www.youtube.com/@montrealelixir">YouTube</a>
+                                to catch up on the latest discussions and learn from community
+                                members.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section cta-section">
+                    <div class="cta-content">
+                        <h2>Ready to Join?</h2>
+                        <p>
+                            Be part of Montreal's our dynamic Elixir community. Whether you're
+                            curious about the language or a seasoned Erlang veteran, there's a place
+                            for you here.
+                        </p>
+                        <a href="https://discord.gg/9ZFBvpbkkA" class="btn"
+                            >Join Our Community on Discord</a
+                        >
+                    </div>
+                </section>
+            </div>
         </main>
 
         <footer>
-            <p>&copy; 2025 Montreal Elixir</p>
+            <div class="container">
+                <p>Built with ❤️ and hosted on <a href="https://github.com/montrealelixir/montrealelixir.github.io">GitHub.</p>
+            </div>
         </footer>
     </body>
 </html>
